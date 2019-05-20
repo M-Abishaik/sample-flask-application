@@ -1,0 +1,30 @@
+from models.user import UserModel
+from tests.base_test import BaseTest
+
+class UserTest(BaseTest):
+    def test_crud(self):
+        with self.app_context():
+            user = UserModel('abishaik', '1234')
+
+            self.assertIsNone(UserModel.find_by_username('abishaik'),
+                              "Found a user with username {}, but expected not to.".format('abishaik'))
+
+            self.assertIsNone(UserModel.find_by_id(1),
+                              "Found a user with username {}, but expected not to.".format('abishaik'))
+
+            user.save_to_db()
+
+            self.assertIsNotNone(UserModel.find_by_username('abishaik'),
+                                 "User {} was added but could not be found".format('abishaik'))
+
+            self.assertIsNotNone(UserModel.find_by_id(1),
+                              "Found a user with username {}, but expected not to.".format('abishaik'))
+
+            user.delete_from_db()
+
+            self.assertIsNone(UserModel.find_by_username('abishaik'),
+                              "Found a user with username {}, but expected not to.".format('abishaik'))
+
+            self.assertIsNone(UserModel.find_by_id(1),
+                              "Found a user with username {}, but expected not to.".format('abishaik'))
+
